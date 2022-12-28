@@ -1,6 +1,4 @@
-using System.Numerics;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using TinyDotNet;
@@ -8,6 +6,7 @@ using TinyDotNet.Reflection;
 
 namespace System;
 
+// TODO: CoreCLR layout
 [StructLayout(LayoutKind.Sequential)]
 public class Type : MemberInfo
 {
@@ -175,8 +174,7 @@ public class Type : MemberInfo
 
     public bool IsGenericType => _genericArguments != null;
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-    private extern Type InternalMakeGenericType(Type[] typeArguments);
+    private Type InternalMakeGenericType(Type[] typeArguments) => NativeHost.TypeMakeGenericType(this, typeArguments);
 
     public Type MakeGenericType(params Type[] typeArguments)
     {

@@ -52,6 +52,12 @@ internal static class NativeHost
     internal static extern void GcKeepAlive(object obj);
 
     [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+    internal static extern void GcReRegisterForFinalize(object obj);
+
+    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+    internal static extern void GcSuppressFinalize(object obj);
+
+    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     internal static extern void X86Pause();
 
     [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -383,5 +389,17 @@ internal static class NativeHost
 
     [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     internal static extern Thread ThreadGetCurrentThread();
+
+    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+    internal static extern Type ObjectGetType(object obj);
+
+    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
+    internal static extern object ObjectMemberwiseClone(object obj);
+
+    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+    internal static extern unsafe void* ArrayGetDataPtr(Array array);
+
+    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
+    internal static extern Type TypeMakeGenericType(Type type, Type[] typeArguments);
 
 }

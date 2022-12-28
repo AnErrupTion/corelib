@@ -41,12 +41,12 @@ public static class GC
     
     public static void ReRegisterForFinalize(object obj)
     {
-        obj.ReRegisterForFinalize();
+        NativeHost.GcReRegisterForFinalize(obj);
     }
     
     public static void SuppressFinalize(object obj)
     {
-        obj.SuppressFinalize();
+        NativeHost.GcSuppressFinalize(obj);
     }
 
 }

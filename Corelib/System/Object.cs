@@ -1,53 +1,41 @@
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
+using TinyDotNet;
 
 namespace System
 {
-    [StructLayout(LayoutKind.Sequential)]
+    [Serializable]
     public class Object
     {
-        private unsafe void* _vtable;
-        private ulong _typeFlags;
-
-        #region Internal state modification
-
-        // TODO: do we want to put this in a critical path? I think it is not needed
-        //       since this only will be used once the object is fully destroyed, so 
-        //       as long as someone got a reference it is alive or inside the finalizer
-        //       which is still considered alive
-        
-        internal void ReRegisterForFinalize()
+        [NonVersionable]
+        public Object()
         {
-            _typeFlags |= (1ul << 51);
         }
 
-        internal void SuppressFinalize()
+        [NonVersionable]
+#pragma warning disable CA1821 // Remove empty Finalizers
+        ~Object()
         {
-            _typeFlags &= unchecked((byte)~(1ul << 51));
         }
+#pragma warning restore CA1821
 
-        #endregion
+        public Type GetType() => NativeHost.ObjectGetType(this);
         
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public extern Type GetType();
-        
-        public virtual bool Equals(object obj)
+        public virtual bool Equals(object? obj)
         {
-            return ReferenceEquals(this, obj);
+            return this == obj;
         }
-        
-        public static bool Equals(object objA, object objB)
+ 
+        public static bool Equals(object? objA, object? objB)
         {
             if (objA == objB)
             {
                 return true;
             }
-            
             if (objA == null || objB == null)
             {
                 return false;
             }
-            
             return objA.Equals(objB);
         }
 
@@ -56,15 +44,15 @@ namespace System
             return RuntimeHelpers.GetHashCode(this);
         }
 
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-        protected extern object MemberwiseClone();
+        protected object MemberwiseClone() => NativeHost.ObjectMemberwiseClone(this);
         
-        public static bool ReferenceEquals(object objA, object objB)
+        [NonVersionable]
+        public static bool ReferenceEquals(object? objA, object? objB)
         {
             return objA == objB;
         }
 
-        public virtual string ToString()
+        public virtual string? ToString()
         {
             return GetType().ToString();
         }

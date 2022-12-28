@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using TinyDotNet;
 
 namespace System.Runtime.InteropServices;
 
@@ -188,7 +189,7 @@ public static class MemoryMarshal
         
         if (memory._object is T[] array)
         {
-            var offset = (int)(((long)memory._pointer - (long)array.GetDataPtr()) / Unsafe.SizeOf<T>());
+            var offset = (int)(((long)memory._pointer - (long)NativeHost.ArrayGetDataPtr(array)) / Unsafe.SizeOf<T>());
             segment = new ArraySegment<T>(array, offset, memory.Length);
             return true;
         }
@@ -319,7 +320,7 @@ public static class MemoryMarshal
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static unsafe ref T GetArrayDataReference<T>(T[] array)
     {
-        return ref Unsafe.AsRef<T>(array.GetDataPtr());
+        return ref Unsafe.AsRef<T>(NativeHost.ArrayGetDataPtr(array));
     }
 
 }

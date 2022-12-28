@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using TinyDotNet;
 
 namespace System;
 
-[StructLayout(LayoutKind.Sequential)]
 public class Array
 {
     
@@ -25,9 +25,6 @@ public class Array
     public int Rank => 1;
 
     private Array() {}
-
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    internal extern unsafe void* GetDataPtr();
 
     #endregion
     

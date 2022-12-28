@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using TinyDotNet;
 
 namespace System;
 
@@ -54,7 +55,7 @@ public readonly unsafe struct Memory<T>
         }
         
         _object = array;
-        _ptr = array.GetDataPtr();
+        _ptr = NativeHost.ArrayGetDataPtr(array);
         _length = array.Length;
     }
     
@@ -73,7 +74,7 @@ public readonly unsafe struct Memory<T>
             ThrowHelper.ThrowArgumentOutOfRangeException();
 
         _object = array;
-        _ptr = Unsafe.Add<T>(array.GetDataPtr(), start);
+        _ptr = Unsafe.Add<T>(NativeHost.ArrayGetDataPtr(array), start);
         _length = array.Length - start;
     }
 
@@ -105,7 +106,7 @@ public readonly unsafe struct Memory<T>
             ThrowHelper.ThrowArgumentOutOfRangeException();
 
         _object = array;
-        _ptr = Unsafe.Add<T>(array.GetDataPtr(), start);
+        _ptr = Unsafe.Add<T>(NativeHost.ArrayGetDataPtr(array), start);
         _length = length;
     }
 
