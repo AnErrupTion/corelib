@@ -17,6 +17,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using TinyDotNet;
 
 namespace System
 {
@@ -1229,7 +1230,7 @@ namespace System
                     // it is rounded to the nearest value above (for positive numbers) or below (for negative numbers)
                     case MidpointRounding.AwayFromZero:
                     {
-                        double fraction = ModF(value, &value);
+                        double fraction = NativeHost.MathModF(value, &value);
 
                         if (Abs(fraction) >= 0.5)
                         {
@@ -1347,7 +1348,7 @@ namespace System
 
         public static unsafe double Truncate(double d)
         {
-            ModF(d, &d);
+            NativeHost.MathModF(d, &d);
             return d;
         }
 
@@ -1399,35 +1400,25 @@ namespace System
             return y * u;
         }
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern double Abs(double value);
+        public static double Abs(double value) => NativeHost.MathAbs(value);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern float Abs(float value);
+        public static float Abs(float value) => NativeHost.MathAbs(value);
 
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Acos(double d);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Acosh(double d);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Asin(double d);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Asinh(double d);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Atan(double d);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Atanh(double d);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Atan2(double y, double x);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Cbrt(double d);
+        public static double Acos(double d) => NativeHost.MathAcos(d);
+
+        public static double Acosh(double d) => NativeHost.MathAcosh(d);
+
+        public static double Asin(double d) => NativeHost.MathAsin(d);
+
+        public static double Asinh(double d) => NativeHost.MathAsinh(d);
+
+        public static double Atan(double d) => NativeHost.MathAtan(d);
+
+        public static double Atanh(double d) => NativeHost.MathAtanh(d);
+
+        public static double Atan2(double y, double x) => NativeHost.MathAtan2(y, x);
+
+        public static double Cbrt(double d) => NativeHost.MathCbrt(d);
 
         // Implementation taken from musl 
         public static double Ceiling(double x)
@@ -1458,66 +1449,41 @@ namespace System
             return x + y;
         }
 
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Cos(double d);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Cosh(double value);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Exp(double d);
+        public static double Cos(double d) => NativeHost.MathCos(d);
 
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-        public static extern double Floor(double d);
+        public static double Cosh(double value) => NativeHost.MathCosh(value);
 
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double FusedMultiplyAdd(double x, double y, double z);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern int ILogB(double x);
+        public static double Exp(double d) => NativeHost.MathExp(d);
 
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-        public static extern double Log(double d);
+        public static double Floor(double d) => NativeHost.MathFloor(d);
 
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Log2(double x);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Log10(double d);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Pow(double x, double y);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Sin(double a);
-        //
-        // public static unsafe (double Sin, double Cos) SinCos(double x)
-        // {
-        //     double sin, cos;
-        //     SinCos(x, &sin, &cos);
-        //     return (sin, cos);
-        // }
+        public static double FusedMultiplyAdd(double x, double y, double z) => NativeHost.MathFusedMultiplyAdd(x, y, z);
 
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Sinh(double value);
+        public static int ILogB(double x) => NativeHost.MathILogB(x);
 
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-        public static extern double Sqrt(double d);
+        public static double Log(double d) => NativeHost.MathLog(d);
 
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Tan(double a);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern double Tanh(double value);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // private static extern double FMod(double x, double y);
+        public static double Log2(double x) => NativeHost.MathLog2(x);
 
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-        private static extern unsafe double ModF(double x, double* intptr);
+        public static double Log10(double d) => NativeHost.MathLog10(d);
 
-        // [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-        // private static extern unsafe void SinCos(double x, double* sin, double* cos);
-        
+        public static double Pow(double x, double y) => NativeHost.MathPow(x, y);
+
+        public static double Sin(double a) => NativeHost.MathSin(a);
+
+        public static unsafe (double Sin, double Cos) SinCos(double x)
+        {
+            double sin, cos;
+            NativeHost.MathSinCos(x, &sin, &cos);
+            return (sin, cos);
+        }
+
+        public static double Sinh(double value) => NativeHost.MathSinh(value);
+
+        public static double Sqrt(double d) => NativeHost.MathSqrt(d);
+
+        public static double Tan(double a) => NativeHost.MathTan(a);
+
+        public static double Tanh(double value) => NativeHost.MathTanh(value);
     }
 }

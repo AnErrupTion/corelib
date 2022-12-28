@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
+using TinyDotNet;
 using TinyDotNet.Reflection;
 
 namespace System;
@@ -104,9 +105,8 @@ public class Type : MemberInfo
     {
         return _genericTypeDefinition;
     }
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern Type GetTypeFromHandle(RuntimeTypeHandle handle);
+
+    public static Type GetTypeFromHandle(RuntimeTypeHandle handle) => NativeHost.TypeGetTypeFromHandle(handle);
     
     public string FullName
     {

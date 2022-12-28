@@ -1,12 +1,10 @@
 using System.Runtime.CompilerServices;
+using TinyDotNet;
 
 namespace System;
 
 public static class Activator
 {
-
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-    private static extern object InternalCreateInstance(Type type, object[] args);
 
     public static object CreateInstance(Type type, params object[] args)
     {
@@ -16,7 +14,7 @@ public static class Activator
         if (type.ContainsGenericParameters)
             throw new ArgumentException();
 
-        return InternalCreateInstance(type, args);
+        return NativeHost.ActivatorCreateInstance(type, args);
     }
     
     public static T CreateInstance<T>() 
@@ -24,8 +22,5 @@ public static class Activator
     {
         return Unsafe.As<T>(CreateInstance(typeof(T)));
     }
-    
-    // [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    // public static extern T CreateInstance<T>() where T : new();
 
 }

@@ -1,4 +1,4 @@
-using System.Runtime.CompilerServices;
+using TinyDotNet;
 
 namespace System;
 
@@ -22,17 +22,16 @@ public static class GC
         Collect(generation, mode);
     }
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern void Collect(int generation, GCCollectionMode mode, bool blocking);
+    public static void Collect(int generation, GCCollectionMode mode, bool blocking) =>
+        NativeHost.GcCollect(generation, mode, blocking);
     
     // TODO: in theory there is also compacting but we don't have such a feature in our garbage 
     //       collection, so for now I will not implement the method, worst case I will throw an error
-    
+
     // we are using an internal call here on purpose, it is going to make 
     // the jit assume that something will change and it will keep the call
     // and the object itself until this point 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern void KeepAlive(object obj);
+    public static void KeepAlive(object obj) => NativeHost.GcKeepAlive(obj);
 
     public static T[] AllocateUninitializedArray<T>(int len)
     {

@@ -92,13 +92,9 @@ public sealed class Thread
     // StaticSaga: 1000
     public static int OptimalMaxSpinWaitsPerSpinIteration => 1000;
     
-    public static extern Thread CurrentThread
-    {
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        get;
-    }
+    public static Thread CurrentThread => NativeHost.ThreadGetCurrentThread();
 
-    public bool IsAlive => (GetNativeThreadState(_threadHandle) & 0xFFF) < 5;
+    public bool IsAlive => (NativeHost.ThreadGetNativeThreadState(_threadHandle) & 0xFFF) < 5;
 
     private string _name = null;
     public string Name
@@ -110,7 +106,7 @@ public sealed class Thread
                 throw new InvalidOperationException("the Name property has already been set.");
             
             _name = value;
-            SetNativeThreadName(_threadHandle, _name);
+            NativeHost.ThreadSetNativeThreadName(_threadHandle, _name);
         }
     }
 
@@ -118,7 +114,7 @@ public sealed class Thread
     {
         get
         {
-            var state = GetNativeThreadState(_threadHandle);
+            var state = NativeHost.ThreadGetNativeThreadState(_threadHandle);
             var threadState = state switch
             {
                 0 => ThreadState.Unstarted,
@@ -155,7 +151,7 @@ public sealed class Thread
             throw new ArgumentNullException(nameof(start));
 
         _startHelper = new StartHelper(start);
-        _threadHandle = CreateNativeThread(StartCallback, this);
+        _threadHandle = NativeHost.ThreadCreateNativeThread(StartCallback, this);
     }
 
     public Thread(ThreadStart start)
@@ -164,7 +160,7 @@ public sealed class Thread
             throw new ArgumentNullException(nameof(start));
 
         _startHelper = new StartHelper(start);
-        _threadHandle = CreateNativeThread(StartCallback, this);
+        _threadHandle = NativeHost.ThreadCreateNativeThread(StartCallback, this);
     }
 
     // Called from the runtime
@@ -179,7 +175,7 @@ public sealed class Thread
 
     ~Thread()
     {
-        ReleaseNativeThread(_threadHandle);
+        NativeHost.ThreadReleaseNativeThread(_threadHandle);
     }
 
     /// <summary>Causes the operating system to change the state of the current instance to <see cref="ThreadState.Running"/>, and optionally supplies an object containing data to be used by the method the thread executes.</summary>
@@ -218,7 +214,7 @@ public sealed class Thread
             startHelper._executionContext = captureContext ? ExecutionContext.Capture() : null;
         }
 
-        StartNativeThread(_threadHandle, parameter);
+        NativeHost.ThreadStartNativeThread(_threadHandle, parameter);
     }
 
     /// <summary>Causes the operating system to change the state of the current instance to <see cref="ThreadState.Running"/>.</summary>
@@ -247,7 +243,7 @@ public sealed class Thread
             startHelper._executionContext = captureContext ? ExecutionContext.Capture() : null;
         }
 
-        StartNativeThread(_threadHandle, null);
+        NativeHost.ThreadStartNativeThread(_threadHandle, null);
     }
 
     public static void Sleep(int millisecondsTimeout)
@@ -279,25 +275,8 @@ public sealed class Thread
         }
     }
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern int GetCurrentProcessorId();
+    public static int GetCurrentProcessorId() => NativeHost.ThreadGetCurrentProcessorId();
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern bool Yield();
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    private static extern int GetNativeThreadState(ulong thread);
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    private static extern ulong CreateNativeThread(Delegate start, Thread managedThread);
-
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    private static extern void StartNativeThread(ulong thread, object parameter);
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    private static extern void ReleaseNativeThread(ulong thread);
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    private static extern void SetNativeThreadName(ulong thread, string name);
+    public static bool Yield() => NativeHost.ThreadYield();
 
 }

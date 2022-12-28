@@ -1,4 +1,4 @@
-using System.Runtime.CompilerServices;
+using TinyDotNet;
 
 namespace System.Threading;
 
@@ -19,7 +19,7 @@ public static class Monitor
         if (obj == null)
             throw new ArgumentNullException(nameof(obj));
 
-        switch (EnterInternal(obj, ref lockTaken))
+        switch (NativeHost.MonitorEnterInternal(obj, ref lockTaken))
         {
             case 0: return;
             case 3: throw new OutOfMemoryException();
@@ -32,7 +32,7 @@ public static class Monitor
         if (obj == null)
             throw new ArgumentNullException(nameof(obj));
 
-        switch (ExitInternal(obj))
+        switch (NativeHost.MonitorExitInternal(obj))
         {
             case 0: return;
             case 3: throw new OutOfMemoryException();
@@ -41,16 +41,14 @@ public static class Monitor
         }
     }
 
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern bool IsEntered(object obj);
+    public static bool IsEntered(object obj) => NativeHost.MonitorIsEntered(obj);
 
     public static void Pulse(object obj)
     {
         if (obj == null)
             throw new ArgumentNullException(nameof(obj));
 
-        switch (PulseInternal(obj))
+        switch (NativeHost.MonitorPulseInternal(obj))
         {
             case 0: return;
             case 3: throw new OutOfMemoryException();
@@ -64,7 +62,7 @@ public static class Monitor
         if (obj == null)
             throw new ArgumentNullException(nameof(obj));
 
-        switch (PulseAllInternal(obj))
+        switch (NativeHost.MonitorPulseAllInternal(obj))
         {
             case 0: return;
             case 3: throw new OutOfMemoryException();
@@ -88,7 +86,7 @@ public static class Monitor
         if (obj == null)
             throw new ArgumentNullException(nameof(obj));
 
-        switch (WaitInternal(obj))
+        switch (NativeHost.MonitorWaitInternal(obj))
         {
             case 0: return true;
             case 3: throw new OutOfMemoryException();
@@ -96,20 +94,5 @@ public static class Monitor
             default: throw new SystemException();
         }
     }
-
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    private static extern int EnterInternal(object obj, ref bool lockTaken);
-
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    private static extern int ExitInternal(object obj);
-
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    private static extern int PulseInternal(object obj);
-
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    private static extern int PulseAllInternal(object obj);
-
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    private static extern int WaitInternal(object obj);
 
 }

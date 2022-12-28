@@ -3,6 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using TinyDotNet;
 
 namespace System.Diagnostics;
 
@@ -36,7 +37,7 @@ public class DebugProvider
         {
             if (message == null)
             {
-                WriteInternal(string.Empty);
+                NativeHost.DebugProviderWriteInternal(string.Empty);
                 return;
             }
             if (_needIndent)
@@ -44,7 +45,7 @@ public class DebugProvider
                 message = GetIndentString() + message;
                 _needIndent = false;
             }
-            WriteInternal(message);
+            NativeHost.DebugProviderWriteInternal(message);
             if (message.EndsWith(Environment.NewLineConst, StringComparison.Ordinal))
             {
                 _needIndent = true;
@@ -100,8 +101,4 @@ public class DebugProvider
         // return _indentString = new string(' ', indentCount);
     }
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-    private static extern void WriteInternal(string? message);
-
-    
 }

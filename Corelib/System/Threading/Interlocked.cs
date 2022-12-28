@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using TinyDotNet;
 
 namespace System.Threading;
 
@@ -6,53 +7,40 @@ public static class Interlocked
 {
 
     #region Add
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern int Add(ref int location1, int value);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern uint Add(ref uint location1, uint value);
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern long Add(ref long location1, long value);
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern ulong Add(ref ulong location1, ulong value);
+    public static int Add(ref int location1, int value) => NativeHost.InterlockedAdd(ref location1, value);
+
+    public static uint Add(ref uint location1, uint value) => NativeHost.InterlockedAdd(ref location1, value);
+
+    public static long Add(ref long location1, long value) => NativeHost.InterlockedAdd(ref location1, value);
+
+    public static ulong Add(ref ulong location1, ulong value) => NativeHost.InterlockedAdd(ref location1, value);
 
     #endregion
     
     #region And
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern int And(ref int location1, int value);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern uint And(ref uint location1, uint value);
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern long And(ref long location1, long value);
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern ulong And(ref ulong location1, ulong value);
+    public static int And(ref int location1, int value) => NativeHost.InterlockedAnd(ref location1, value);
+
+    public static uint And(ref uint location1, uint value) => NativeHost.InterlockedAnd(ref location1, value);
+
+    public static long And(ref long location1, long value) => NativeHost.InterlockedAnd(ref location1, value);
+
+    public static ulong And(ref ulong location1, ulong value) => NativeHost.InterlockedAnd(ref location1, value);
 
     #endregion
 
     #region Compare Exchange
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern int CompareExchange(ref int location1, int value, int comparand);
+    public static int CompareExchange(ref int location1, int value, int comparand) => NativeHost.InterlockedCompareExchange(ref location1, value, comparand);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern uint CompareExchange(ref uint location1, uint value, uint comparand);
+    public static uint CompareExchange(ref uint location1, uint value, uint comparand) => NativeHost.InterlockedCompareExchange(ref location1, value, comparand);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern long CompareExchange(ref long location1, long value, long comparand);
+    public static long CompareExchange(ref long location1, long value, long comparand) => NativeHost.InterlockedCompareExchange(ref location1, value, comparand);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern ulong CompareExchange(ref ulong location1, ulong value, ulong comparand);
+    public static ulong CompareExchange(ref ulong location1, ulong value, ulong comparand) => NativeHost.InterlockedCompareExchange(ref location1, value, comparand);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern object CompareExchange(ref object location1, object value, object comparand);
+    public static object CompareExchange(ref object location1, object value, object comparand) => NativeHost.InterlockedCompareExchange(ref location1, value, comparand);
 
     public static T CompareExchange<T>(ref T location1, T value, T comparand)
         where T : class
@@ -65,36 +53,27 @@ public static class Interlocked
 
     #region Decrement
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern int Decrement(ref int location);
+    public static int Decrement(ref int location) => NativeHost.InterlockedDecrement(ref location);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern long Decrement(ref long location);
+    public static long Decrement(ref long location) => NativeHost.InterlockedDecrement(ref location);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern uint Decrement(ref uint location);
+    public static uint Decrement(ref uint location) => NativeHost.InterlockedDecrement(ref location);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern ulong Decrement(ref ulong location);
+    public static ulong Decrement(ref ulong location) => NativeHost.InterlockedDecrement(ref location);
 
     #endregion
     
     #region Exchange
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern int Exchange(ref int location1, int value);
+    public static int Exchange(ref int location1, int value) => NativeHost.InterlockedExchange(ref location1, value);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern uint Exchange(ref uint location1, uint value);
+    public static uint Exchange(ref uint location1, uint value) => NativeHost.InterlockedExchange(ref location1, value);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern long Exchange(ref long location1, long value);
+    public static long Exchange(ref long location1, long value) => NativeHost.InterlockedExchange(ref location1, value);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern ulong Exchange(ref ulong location1, ulong value);
+    public static ulong Exchange(ref ulong location1, ulong value) => NativeHost.InterlockedExchange(ref location1, value);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern object Exchange(ref object location1, object value);
+    public static object Exchange(ref object location1, object value) => NativeHost.InterlockedExchange(ref location1, value);
 
     public static T Exchange<T>(ref T location1, T value)
         where T : class
@@ -107,46 +86,35 @@ public static class Interlocked
 
     #region Increment
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern int Increment(ref int location);
+    public static int Increment(ref int location) => NativeHost.InterlockedIncrement(ref location);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern long Increment(ref long location);
+    public static long Increment(ref long location) => NativeHost.InterlockedIncrement(ref location);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern uint Increment(ref uint location);
+    public static uint Increment(ref uint location) => NativeHost.InterlockedIncrement(ref location);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern ulong Increment(ref ulong location);
+    public static ulong Increment(ref ulong location) => NativeHost.InterlockedIncrement(ref location);
 
     #endregion
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern void MemoryBarrier();
+    public static void MemoryBarrier() => NativeHost.InterlockedMemoryBarrier();
     
     #region Or
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern int Or(ref int location1, int value);
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern uint Or(ref uint location1, uint value);
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern long Or(ref long location1, long value);
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern ulong Or(ref ulong location1, ulong value);
+    public static int Or(ref int location1, int value) => NativeHost.InterlockedOr(ref location1, value);
+
+    public static uint Or(ref uint location1, uint value) => NativeHost.InterlockedOr(ref location1, value);
+
+    public static long Or(ref long location1, long value) => NativeHost.InterlockedOr(ref location1, value);
+
+    public static ulong Or(ref ulong location1, ulong value) => NativeHost.InterlockedOr(ref location1, value);
 
     #endregion
 
     #region Read
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern long Read(ref long location);
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern ulong Read(ref ulong location);
+
+    public static long Read(ref long location) => NativeHost.InterlockedRead(ref location);
+
+    public static ulong Read(ref ulong location) => NativeHost.InterlockedRead(ref location);
 
     #endregion
     

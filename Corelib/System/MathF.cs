@@ -13,6 +13,7 @@
 
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using TinyDotNet;
 
 namespace System
 {
@@ -424,7 +425,7 @@ namespace System
                     // it is rounded to the nearest value above (for positive numbers) or below (for negative numbers)
                     case MidpointRounding.AwayFromZero:
                     {
-                        float fraction = ModF(x, &x);
+                        float fraction = NativeHost.MathFModF(x, &x);
 
                         if (Abs(fraction) >= 0.5f)
                         {
@@ -473,7 +474,7 @@ namespace System
 
         public static unsafe float Truncate(float x)
         {
-            ModF(x, &x);
+            NativeHost.MathFModF(x, &x);
             return x;
         }
 
@@ -518,93 +519,60 @@ namespace System
             float u = BitConverter.Int32BitsToSingle(((int)(0x7f + n) << 23));
             return y * u;
         }
-        
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Acos(float x);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Acosh(float x);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Asin(float x);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Asinh(float x);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Atan(float x);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Atanh(float x);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Atan2(float y, float x);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Cbrt(float x);
 
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-        public static extern float Ceiling(float x);
+        public static float Acos(float x) => NativeHost.MathFAcos(x);
 
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Cos(float x);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Cosh(float x);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Exp(float x);
+        public static float Acosh(float x) => NativeHost.MathFAcosh(x);
 
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-        public static extern float Floor(float x);
+        public static float Asin(float x) => NativeHost.MathFAsin(x);
 
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float FusedMultiplyAdd(float x, float y, float z);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern int ILogB(float x);
+        public static float Asinh(float x) => NativeHost.MathFAsinh(x);
 
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-        public static extern float Log(float x);
+        public static float Atan(float x) => NativeHost.MathFAtan(x);
 
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Log2(float x);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Log10(float x);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Pow(float x, float y);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Sin(float x);
-        //
-        // public static unsafe (float Sin, float Cos) SinCos(float x)
-        // {
-        //     float sin, cos;
-        //     SinCos(x, &sin, &cos);
-        //     return (sin, cos);
-        // }
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Sinh(float x);
+        public static float Atanh(float x) => NativeHost.MathFAtanh(x);
 
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-        public static extern float Sqrt(float x);
+        public static float Atan2(float y, float x) => NativeHost.MathFAtan2(y, x);
 
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Tan(float x);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // public static extern float Tanh(float x);
-        //
-        // [MethodImpl(MethodImplOptions.InternalCall)]
-        // private static extern float FMod(float x, float y);
+        public static float Cbrt(float x) => NativeHost.MathFCbrt(x);
 
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-        private static extern unsafe float ModF(float x, float* intptr);
+        public static float Ceiling(float x) => NativeHost.MathFCeiling(x);
 
-        // [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-        // private static extern unsafe void SinCos(float x, float* sin, float* cos);
+        public static float Cos(float x) => NativeHost.MathFCos(x);
+
+        public static float Cosh(float x) => NativeHost.MathFCosh(x);
+
+        public static float Exp(float x) => NativeHost.MathFExp(x);
+
+        public static float Floor(float x) => NativeHost.MathFFloor(x);
+
+        public static float FusedMultiplyAdd(float x, float y, float z) => NativeHost.MathFFusedMultiplyAdd(x, y, z);
+
+        public static int ILogB(float x) => NativeHost.MathFILogB(x);
+
+        public static float Log(float x) => NativeHost.MathFLog(x);
+
+        public static float Log2(float x) => NativeHost.MathFLog2(x);
+
+        public static float Log10(float x) => NativeHost.MathFLog10(x);
+
+        public static float Pow(float x, float y) => NativeHost.MathFPow(x, y);
+
+        public static float Sin(float x) => NativeHost.MathFSin(x);
+
+        public static unsafe (float Sin, float Cos) SinCos(float x)
+        {
+            float sin, cos;
+            NativeHost.MathFSinCos(x, &sin, &cos);
+            return (sin, cos);
+        }
+
+        public static float Sinh(float x) => NativeHost.MathFSinh(x);
+
+        public static float Sqrt(float x) => NativeHost.MathFSqrt(x);
+
+        public static float Tan(float x) => NativeHost.MathFTan(x);
+
+        public static float Tanh(float x) => NativeHost.MathFTanh(x);
     }
 }

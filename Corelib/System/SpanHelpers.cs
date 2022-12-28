@@ -1,7 +1,7 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using System.Diagnostics;
+using TinyDotNet;
 
 namespace System
 {
@@ -11,8 +11,8 @@ namespace System
         {
             if (byteLength == 0)
                 return;
-            
-            Buffer._ZeroMemory(ref b, byteLength);
+
+            NativeHost.BufferZeroMemory(ref b, byteLength);
         }
     }
 }

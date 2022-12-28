@@ -6,17 +6,14 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using TinyDotNet;
 
 namespace System
 {
     public static class Environment
     {
-        
-        
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-        private static extern int GetProcessorCount();
 
-        public static int ProcessorCount { get; } = GetProcessorCount();
+        public static int ProcessorCount { get; } = NativeHost.GetProcessorCount();
 
         /// <summary>
         /// Gets whether the current machine has only a single processor.

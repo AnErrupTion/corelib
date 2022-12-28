@@ -1,4 +1,4 @@
-using System.Runtime.CompilerServices;
+using TinyDotNet;
 
 namespace System.Diagnostics;
 
@@ -10,11 +10,8 @@ public class Stopwatch
     
     static Stopwatch()
     {
-        Frequency = GetTscFrequency() * TimeSpan.TicksPerSecond;
+        Frequency = NativeHost.StopwatchGetTscFrequency() * TimeSpan.TicksPerSecond;
     }
-
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    private static extern long GetTscFrequency();
 
     private long _total = 0;
     private long _start = 0;
@@ -63,9 +60,8 @@ public class Stopwatch
         _total += GetTimestamp() - _start;
         IsRunning = false;
     }
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern long GetTimestamp();
+
+    public static long GetTimestamp() => NativeHost.StopwatchGetTimestamp();
 
     public static Stopwatch StartNew()
     {

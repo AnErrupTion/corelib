@@ -4,6 +4,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using TinyDotNet;
 
 namespace System;
 
@@ -245,7 +246,7 @@ public readonly ref struct Span<T>
         else
         {
             // otherwise we can call a native zero memory function
-            Buffer._ZeroMemory(ref Unsafe.AsRef<byte>(_pointer._value), (nuint)Unsafe.SizeOf<T>() * (nuint)Length);
+            NativeHost.BufferZeroMemory(ref Unsafe.AsRef<byte>(_pointer._value), (nuint)Unsafe.SizeOf<T>() * (nuint)Length);
         }
     }
         

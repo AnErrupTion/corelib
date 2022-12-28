@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using TinyDotNet;
 using TinyDotNet.Reflection;
 
 namespace System.Reflection;
@@ -34,12 +35,6 @@ public class Assembly
     private unsafe void* _userStringsTable;
     private unsafe void* _customAttributeMap;
 
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    private extern static Assembly LoadInternal(byte[] rawAssembly, bool reflection); 
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    private extern static Assembly LoadInternal(string rawAssembly, bool reflection);
-    
     internal Assembly()
     {
     }
@@ -95,7 +90,7 @@ public class Assembly
         if (rawAssembly == null)
             throw new ArgumentNullException(nameof(rawAssembly));
 
-        var asm = LoadInternal(rawAssembly, false);
+        var asm = NativeHost.AssemblyLoadInternal(rawAssembly, false);
         if (asm == null)
             throw new BadImageFormatException();
         
@@ -107,7 +102,7 @@ public class Assembly
         if (assemblyString == null)
             throw new ArgumentNullException(nameof(assemblyString));
 
-        var asm = LoadInternal(assemblyString, false);
+        var asm = NativeHost.AssemblyLoadInternal(assemblyString, false);
         if (asm == null)
             throw new BadImageFormatException();
         
@@ -119,7 +114,7 @@ public class Assembly
         if (rawAssembly == null)
             throw new ArgumentNullException(nameof(rawAssembly));
 
-        var asm = LoadInternal(rawAssembly, true);
+        var asm = NativeHost.AssemblyLoadInternal(rawAssembly, true);
         if (asm == null)
             throw new BadImageFormatException();
         
@@ -131,7 +126,7 @@ public class Assembly
         if (assemblyString == null)
             throw new ArgumentNullException(nameof(assemblyString));
 
-        var asm = LoadInternal(assemblyString, true);
+        var asm = NativeHost.AssemblyLoadInternal(assemblyString, true);
         if (asm == null)
             throw new BadImageFormatException();
         

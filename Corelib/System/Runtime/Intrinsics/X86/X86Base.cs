@@ -1,4 +1,4 @@
-using System.Runtime.CompilerServices;
+using TinyDotNet;
 
 namespace System.Runtime.Intrinsics.X86;
 
@@ -6,8 +6,7 @@ public static class X86Base
 {
 
     public static bool IsSupported => true;
-    
-    [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public static extern void Pause();
+
+    public static void Pause() => NativeHost.X86Pause();
 
 }
