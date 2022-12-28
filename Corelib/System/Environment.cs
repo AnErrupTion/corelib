@@ -13,7 +13,7 @@ namespace System
     public static class Environment
     {
 
-        public static int ProcessorCount { get; } = NativeHost.GetProcessorCount();
+        public static int ProcessorCount { get; } = NativeHost.EnvironmentGetProcessorCount();
 
         /// <summary>
         /// Gets whether the current machine has only a single processor.

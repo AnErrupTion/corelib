@@ -178,7 +178,7 @@ internal static class NativeHost
     internal static extern ulong InterlockedRead(ref ulong location);
 
     [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
-    internal static extern int GetProcessorCount();
+    internal static extern int EnvironmentGetProcessorCount();
 
     [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Native)]
     internal static extern object ActivatorCreateInstance(Type type, object[] args);
